@@ -1,6 +1,6 @@
 from typing import Union
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Response, status
 from pydantic import BaseModel, Field
 
 app = FastAPI()
@@ -50,42 +50,48 @@ async def read_avaliacao_por_id(id_avaliacao: int):
 
 # Post filme
 @app.post("/filmes/")
-async def create_filme(filme: Filme):
+async def create_filme(filme: Filme, response: Response):
     filme_dict = filme.dict()
     dicio_filmes[id_filme_generico] = filme_dict
     id_filme_generico += 1
+    response.status_code = status.HTTP_201_CREATED
     return filme_dict
 
 # Post avaliacao
 @app.post("/avalicaoes/")
-async def create_avaliacao(avaliacao: Avaliacao):
+async def create_avaliacao(avaliacao: Avaliacao, response: Response):
     avaliacao_dict = avaliacao.dict()
     dicio_avaliacoes[id_filme_generico] = avaliacao_dict
     id_avaliacao_generico += 1
+    response.status_code = status.HTTP_201_CREATED
     return avaliacao_dict
 
 # Put filme
 @app.put("/filmes/{id_filme}")
-def update_filme(id_filme: int, filme: Filme):
+def update_filme(id_filme: int, filme: Filme, response: Response):
     filme_dict = filme.dict()
     dicio_filmes[id_filme] = filme_dict
+    response.status_code = status.HTTP_200_OK
     return filme_dict
 
 # Put avaliacao
 @app.put("/avaliacoes/{id_avaliacao}")
-def update_avaliacao(id_avaliacao: int, avaliacao: Avaliacao):
+def update_avaliacao(id_avaliacao: int, avaliacao: Avaliacao, response: Response):
     avaliacao_dict = avaliacao.dict()
     dicio_avaliacoes[id_avaliacao] = avaliacao_dict
+    response.status_code = status.HTTP_200_OK
     return avaliacao_dict
 
 # Delete filme
 @app.delete("/filmes/{id_filme}")
-def delete_filme(id_filme: int):
+def delete_filme(id_filme: int, response: Response):
     del dicio_filmes[id_filme]
+    response.status_code = status.HTTP_204_NO_CONTENT
     return None
 
 # Delete avaliacao
 @app.delete("/avaliacoes/{id_avaliacao}")
-def delete_avaliacao(id_avaliacao: int):
+def delete_avaliacao(id_avaliacao: int, response: Response):
     del dicio_avaliacoes[id_avaliacao]
+    response.status_code = status.HTTP_204_NO_CONTENT
     return None
