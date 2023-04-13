@@ -31,26 +31,31 @@ async def read_root():
 # Get lista filmes
 @app.get("/filmes/")
 async def read_filmes():
+    global dicio_filmes
     return dicio_filmes
 
 # Get lista avaliacoes
 @app.get("/avaliacaoes/")
 async def read_avaliacoes():
+    global dicio_avaliacoes
     return dicio_avaliacoes
 
 # Get filme por id
 @app.get("/filmes/{id_filme}")
 async def read_filme_por_id(id_filme: int):
+    global dicio_filmes
     return dicio_filmes[id_filme] if id_filme in dicio_filmes else None
 
 # Get avaliacoes por filme
-@app.get("/avaliacoes/{id_filme}")
+@app.get("/avaliacoes/{id_avaliacao}")
 async def read_avaliacao_por_id(id_avaliacao: int):
+    global dicio_avaliacoes
     return dicio_avaliacoes[id_avaliacao] if id_avaliacao in dicio_avaliacoes else None
 
 # Post filme
 @app.post("/filmes/")
 async def create_filme(filme: Filme, response: Response):
+    global dicio_filmes, id_filme_generico
     filme_dict = filme.dict()
     dicio_filmes[id_filme_generico] = filme_dict
     id_filme_generico += 1
@@ -58,10 +63,11 @@ async def create_filme(filme: Filme, response: Response):
     return filme_dict
 
 # Post avaliacao
-@app.post("/avalicaoes/")
+@app.post("/avaliacoes/")
 async def create_avaliacao(avaliacao: Avaliacao, response: Response):
+    global dicio_avaliacoes, id_avaliacao_generico
     avaliacao_dict = avaliacao.dict()
-    dicio_avaliacoes[id_filme_generico] = avaliacao_dict
+    dicio_avaliacoes[id_avaliacao_generico] = avaliacao_dict
     id_avaliacao_generico += 1
     response.status_code = status.HTTP_201_CREATED
     return avaliacao_dict
@@ -69,6 +75,7 @@ async def create_avaliacao(avaliacao: Avaliacao, response: Response):
 # Put filme
 @app.put("/filmes/{id_filme}")
 def update_filme(id_filme: int, filme: Filme, response: Response):
+    global dicio_filmes
     filme_dict = filme.dict()
     dicio_filmes[id_filme] = filme_dict
     response.status_code = status.HTTP_200_OK
@@ -77,6 +84,7 @@ def update_filme(id_filme: int, filme: Filme, response: Response):
 # Put avaliacao
 @app.put("/avaliacoes/{id_avaliacao}")
 def update_avaliacao(id_avaliacao: int, avaliacao: Avaliacao, response: Response):
+    global dicio_avaliacoes
     avaliacao_dict = avaliacao.dict()
     dicio_avaliacoes[id_avaliacao] = avaliacao_dict
     response.status_code = status.HTTP_200_OK
@@ -85,6 +93,7 @@ def update_avaliacao(id_avaliacao: int, avaliacao: Avaliacao, response: Response
 # Delete filme
 @app.delete("/filmes/{id_filme}")
 def delete_filme(id_filme: int, response: Response):
+    global dicio_filmes
     del dicio_filmes[id_filme]
     response.status_code = status.HTTP_204_NO_CONTENT
     return None
@@ -92,6 +101,7 @@ def delete_filme(id_filme: int, response: Response):
 # Delete avaliacao
 @app.delete("/avaliacoes/{id_avaliacao}")
 def delete_avaliacao(id_avaliacao: int, response: Response):
+    global dicio_avaliacoes
     del dicio_avaliacoes[id_avaliacao]
     response.status_code = status.HTTP_204_NO_CONTENT
     return None
