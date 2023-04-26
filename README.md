@@ -31,3 +31,5 @@ Para acessar no WebBrowser as funcionalidades da API:
 [Status Code](https://www.restapitutorial.com/httpstatuscodes.html)
 
 [Notion - Bloco de Notas](https://juniper-condor-453.notion.site/Projeto-BlockBuster-2e755cab08d94bcb8cdefe871d6d212d)
+
+[SQLAlchemy - Cascade Docs](https://docs.sqlalchemy.org/en/20/orm/cascades.html#passive-deletes)
