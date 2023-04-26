@@ -17,34 +17,72 @@ def get_db():
     finally:
         db.close()
 
-@app.get("/users/", response_model=list[schemas.User])
-def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    users = crud.get_users(db, skip=skip, limit=limit)
-    return users
+# Get lista filmes
+@app.get("/filmes/", response_model=list[schemas.Filmes])
+def read_filmes(limit : int = 100, db: Session = Depends(get_db)):
+    filmes = crud.get_filmes(db, limit=limit)
+    return filmes
 
-@app.post("/users/", response_model=schemas.User)
-def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
-    db_user = crud.get_user_by_email(db, email=user.email)
-    if db_user:
-        raise HTTPException(status_code=400, detail="Email already registered")
-    return crud.create_user(db=db, user=user)
+# Get lista avaliacoes
+@app.get("/avaliacaoes/", response_model=list[schemas.Avaliacoes])
+def read_avaliacoes(limit : int = 100, db: Session = Depends(get_db)):
+    avaliacoes = crud.get_avaliacoes(db, limit=limit)
+    return avaliacoes
 
-@app.get("/users/{user_id}", response_model=schemas.User)
-def read_user(user_id: int, db: Session = Depends(get_db)):
-    db_user = crud.get_user(db, user_id=user_id)
-    if db_user is None:
-        raise HTTPException(status_code=404, detail="User not found")
-    return db_user
+# Get filme por id
+@app.get("/filmes/{id_filme}", response_model=schemas.Filmes)
+def read_filme_por_id(id_filme: int, db: Session = Depends(get_db)):
+    filme = crud.get_filme_por_id(db, id_filme=id_filme)
+    if filme is None:
+        raise HTTPException(status_code=404, detail="Filme não encontrado")
+    return filme
 
+# Get avaliacoes por filme
+@app.get("/avaliacoes/{id_filme}", response_model=list[schemas.Avaliacoes])
+def read_avaliacoes_por_filme(id_filme: int, db: Session = Depends(get_db)):
+    avaliacoes = crud.get_avaliacoes_por_filme(db, id_filme=id_filme)
+    if avaliacoes is None:
+        raise HTTPException(status_code=404, detail="Avaliação não encontrada")
+    return avaliacoes
 
-@app.post("/users/{user_id}/items/", response_model=schemas.Item)
-def create_item_for_user(
-    user_id: int, item: schemas.ItemCreate, db: Session = Depends(get_db)
-):
-    return crud.create_user_item(db=db, item=item, user_id=user_id)
+# Post filme
+@app.post("/filmes/", response_model=schemas.Filmes)
+def create_filme(filme: schemas.FilmesCreate, db: Session = Depends(get_db)):
+    return crud.create_filme(db=db, filme=filme)
 
+# Post avaliacao
+@app.post("/avaliacoes/", response_model=schemas.Avaliacoes)
+def create_avaliacao(avaliacao: schemas.AvaliacoesCreate, db: Session = Depends(get_db)):
+    return crud.create_avaliacao(db=db, avaliacao=avaliacao)
 
-@app.get("/items/", response_model=list[schemas.Item])
-def read_items(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    items = crud.get_items(db, skip=skip, limit=limit)
-    return items
+# Put filme
+@app.put("/filmes/{id_filme}", response_model=schemas.Filmes)
+def update_filme(id_filme: int, filme: schemas.FilmesCreate, db: Session = Depends(get_db)):
+    updated_filme = crud.update_filme(db=db, id_filme=id_filme, filme=filme)
+    if updated_filme is None:
+        raise HTTPException(status_code=204, detail="Filme especificado não existe")
+    return updated_filme
+
+# Put avaliacao
+@app.put("/avaliacoes/{id_avaliacao}", response_model=schemas.Avaliacoes)
+def update_avaliacao(id_avaliacao: int, avaliacao: schemas.AvaliacoesCreate, db: Session = Depends(get_db)):
+    updated_avaliacao = crud.update_avaliacao(db=db, id_avaliacao=id_avaliacao, avaliacao=avaliacao)
+    if updated_avaliacao is None:
+        raise HTTPException(status_code=204, detail="Avaliação especificada não existe")
+    return updated_avaliacao
+
+# Delete filme
+@app.delete("/filmes/{id_filme}", response_model=schemas.Filmes)
+def delete_filme(id_filme: int, db: Session = Depends(get_db)):
+    deleted_filme = crud.delete_filme(db=db, id_filme=id_filme)
+    if deleted_filme is None:
+        raise HTTPException(status_code=204, detail="Filme especificado não existe")
+    return deleted_filme
+
+# Delete avaliacao
+@app.delete("/avaliacoes/{id_avaliacao}", response_model=schemas.Avaliacoes)
+def delete_avaliacao(id_avaliacao: int, db: Session = Depends(get_db)):
+    deleted_avaliacao = crud.delete_avaliacao(db=db, id_avaliacao=id_avaliacao)
+    if deleted_avaliacao is None:
+        raise HTTPException(status_code=204, detail="Avaliação especificada não existe")
+    return deleted_avaliacao
