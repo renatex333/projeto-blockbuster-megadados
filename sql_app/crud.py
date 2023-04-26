@@ -2,6 +2,43 @@ from sqlalchemy.orm import Session
 
 from . import models, schemas
 
+#############################
+### Funções a Implementar ###
+#############################
+
+def get_filmes(db, limit):
+    pass
+
+def get_avaliacoes(db, limit):
+    pass
+
+def get_filme_por_id(db, id_filme):
+    pass
+
+def get_avaliacoes_por_filme(db, id_filme):
+    pass
+
+def create_filme(db, filme):
+    pass
+
+def create_avaliacao(db, avaliacao):
+    pass
+
+def update_filme(db, id_filme, filme):
+    pass
+
+def update_avaliacao(db, id_avaliacao, avaliacao):
+    pass
+
+def delete_filme(db, id_filme):
+    pass
+
+def delete_avaliacao(db, id_avaliacao):
+    pass
+
+########################
+### Funções tutorial ###
+########################
 
 def get_user(db: Session, user_id: int):
     return db.query(models.User).filter(models.User.id == user_id).first()
