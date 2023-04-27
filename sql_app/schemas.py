@@ -32,12 +32,10 @@ class FilmesCreate(FilmesBase):
     pass
 
 class FilmesUpdate(FilmesBase):
-    id_filme: int
-
+    pass
 
 class Filmes(FilmesBase):
     id_filme: int
-    avaliacoes: list[Avaliacoes] = []
 
     class Config:
         orm_mode = True

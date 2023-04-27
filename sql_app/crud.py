@@ -7,10 +7,10 @@ from . import models, schemas
 ### Funções a Implementar ###
 #############################
 
-def get_filmes(db: Session):
-    return db.query(models.Filmes).all()
+def get_filmes(db: Session, limit: int):
+    return db.query(models.Filmes).limit(limit).all()
 
-def get_avaliacoes(db: Session, limit: int = 10):
+def get_avaliacoes(db: Session, limit: int):
     return db.query(models.Avaliacoes).limit(limit).all()
 
 def get_filme_por_id(db: Session, id_filme: int):
@@ -33,26 +33,26 @@ def create_avaliacao(db: Session, avaliacao: schemas.AvaliacoesCreate):
     db.refresh(db_avaliacao)
     return db_avaliacao
 
-def update_filme(db: Session, filme: schemas.FilmesUpdate):
-    db_filme = db.execute(update("Filmes").where(models.Filmes.id_filme == filme.id_filme).values(nome=filme.nome, categoria=filme.categoria, duracao=filme.duracao, ano=filme.ano))
+def update_filme(db: Session, id_filme: int, filme: schemas.FilmesUpdate):
+    db_filme = db.execute("filmes".update().where(models.Filmes.id_filme == id_filme).values(nome=filme.nome, categoria=filme.categoria, duracao=filme.duracao, ano=filme.ano))
     db.commit()
-    db.refresh("Filmes")
+    db.refresh("filmes")
     return db_filme
 
 def update_avaliacao(db: Session, avaliacao: schemas.AvaliacoesUpdate):
-    db_avaliacao = db.execute(update("Avaliacoes").where(models.Avaliacoes.id_avaliacao == avaliacao.id_avaliacao).values(nota=avaliacao.nota, comentario=avaliacao.comentario))
+    db_avaliacao = db.execute(update("avaliacoes").where(models.Avaliacoes.id_avaliacao == avaliacao.id_avaliacao).values(nota=avaliacao.nota, comentario=avaliacao.comentario))
     db.commit()
-    db.refresh("Avaliacoes")
+    db.refresh("avaliacoes")
     return db_avaliacao
 
 def delete_filme(db: Session, id_filme: int):
     db_filme = db.delete(models.Filmes).where(models.Filmes.id_filme == id_filme)
     db.commit()
-    db.refresh("Filmes")
+    db.refresh("filmes")
     return db_filme
 
 def delete_avaliacao(db: Session, id_avaliacao: int):
     db_avaliacao = db.delete(models.Avaliacoes).where(models.Avaliacoes.id_avaliacao == id_avaliacao)
     db.commit()
-    db.refresh("Avaliacoes")
+    db.refresh("avaliacoes")
     return db_avaliacao

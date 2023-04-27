@@ -19,13 +19,13 @@ def get_db():
 
 # Get lista filmes
 @app.get("/filmes/", response_model=list[schemas.Filmes])
-def read_filmes(limit : int = 100, db: Session = Depends(get_db)):
+def read_filmes(limit : int = 10, db: Session = Depends(get_db)):
     filmes = crud.get_filmes(db, limit=limit)
     return filmes
 
 # Get lista avaliacoes
 @app.get("/avaliacaoes/", response_model=list[schemas.Avaliacoes])
-def read_avaliacoes(limit : int = 100, db: Session = Depends(get_db)):
+def read_avaliacoes(limit : int = 10, db: Session = Depends(get_db)):
     avaliacoes = crud.get_avaliacoes(db, limit=limit)
     return avaliacoes
 
