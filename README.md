@@ -28,7 +28,7 @@ A API RESTFul foi projetada para se comunicar com um banco de dados em um servid
 
 <img src="blockbuster_model.png" width="800">
 
-[Link]() para demonstração da API RESTFul desenvolvida em Python com o framework FastAPI e integração com base de dados MySQL.
+[Link](https://youtu.be/xASq6oCNMjE) para demonstração da API RESTFul desenvolvida em Python com o framework FastAPI e integração com base de dados MySQL.
 
 ## Referências
 
