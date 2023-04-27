@@ -3,14 +3,10 @@ from sqlalchemy import update
 
 from . import models, schemas
 
-#############################
-### Funções a Implementar ###
-#############################
-
-def get_filmes(db: Session, limit: int):
+def get_filmes(db: Session, limit: int = 10):
     return db.query(models.Filmes).limit(limit).all()
 
-def get_avaliacoes(db: Session, limit: int):
+def get_avaliacoes(db: Session, limit: int = 10):
     return db.query(models.Avaliacoes).limit(limit).all()
 
 def get_filme_por_id(db: Session, id_filme: int):
@@ -34,25 +30,29 @@ def create_avaliacao(db: Session, avaliacao: schemas.AvaliacoesCreate):
     return db_avaliacao
 
 def update_filme(db: Session, id_filme: int, filme: schemas.FilmesUpdate):
-    db_filme = db.execute("filmes".update().where(models.Filmes.id_filme == id_filme).values(nome=filme.nome, categoria=filme.categoria, duracao=filme.duracao, ano=filme.ano))
+    updated = db.query(models.Filmes).filter(models.Filmes.id_filme == id_filme).update({models.Filmes.nome: filme.nome, models.Filmes.categoria: filme.categoria, models.Filmes.duracao: filme.duracao, models.Filmes.ano: filme.ano})
+    if not updated:
+        return None
     db.commit()
-    db.refresh("filmes")
-    return db_filme
+    return db.query(models.Filmes).filter(models.Filmes.id_filme == id_filme).first()
 
-def update_avaliacao(db: Session, avaliacao: schemas.AvaliacoesUpdate):
-    db_avaliacao = db.execute(update("avaliacoes").where(models.Avaliacoes.id_avaliacao == avaliacao.id_avaliacao).values(nota=avaliacao.nota, comentario=avaliacao.comentario))
+def update_avaliacao(db: Session, id_avaliacao: int, avaliacao: schemas.AvaliacoesUpdate):
+    updated = db.query(models.Avaliacoes).filter(models.Avaliacoes.id_avaliacao == id_avaliacao).update({models.Avaliacoes.nota: avaliacao.nota, models.Avaliacoes.comentario: avaliacao.comentario})
+    if not updated:
+        return None
     db.commit()
-    db.refresh("avaliacoes")
-    return db_avaliacao
+    return db.query(models.Avaliacoes).filter(models.Avaliacoes.id_avaliacao == id_avaliacao).first()
 
 def delete_filme(db: Session, id_filme: int):
-    db_filme = db.delete(models.Filmes).where(models.Filmes.id_filme == id_filme)
+    deleted = db.query(models.Filmes).filter(models.Filmes.id_filme == id_filme).delete()
+    if not deleted:
+        return None
     db.commit()
-    db.refresh("filmes")
-    return db_filme
+    return {"status": "success", "message": "Filme deletado"}
 
 def delete_avaliacao(db: Session, id_avaliacao: int):
-    db_avaliacao = db.delete(models.Avaliacoes).where(models.Avaliacoes.id_avaliacao == id_avaliacao)
+    deleted = db.query(models.Avaliacoes).filter(models.Avaliacoes.id_avaliacao == id_avaliacao).delete()
+    if not deleted:
+        return None
     db.commit()
-    db.refresh("avaliacoes")
-    return db_avaliacao
+    return {"status": "success", "message": "Avaliação deletada"}

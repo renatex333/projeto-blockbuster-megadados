@@ -21,4 +21,5 @@ DROP TABLE IF EXISTS avaliacoes;
         PRIMARY KEY (id_avaliacao),
         FOREIGN KEY (id_filme)
 			REFERENCES filmes(id_filme)
+            ON DELETE CASCADE
     );

@@ -3,11 +3,10 @@ from sqlalchemy.orm import relationship
 
 from .database import Base
 
-
 class Filmes(Base):
     __tablename__ = "filmes"
 
-    id_filme = Column(Integer, primary_key=True, index=True)
+    id_filme = Column(Integer, primary_key=True, index=True, autoincrement=True)
     nome = Column(String(100), index=True)
     categoria = Column(String(80))
     duracao = Column(SmallInteger)
@@ -15,11 +14,10 @@ class Filmes(Base):
 
     avaliacoes = relationship("Avaliacoes", back_populates="filme", cascade="all, delete-orphan")
 
-
 class Avaliacoes(Base):
     __tablename__ = "avaliacoes"
 
-    id_avaliacao = Column(Integer, primary_key=True, index=True)
+    id_avaliacao = Column(Integer, primary_key=True, index=True, autoincrement=True)
     id_filme = Column(Integer, ForeignKey("filmes.id_filme"))
     nota = Column(SmallInteger)
     comentario = Column(String(200), nullable=True)
