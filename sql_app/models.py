@@ -13,7 +13,7 @@ class Filmes(Base):
     duracao = Column(SmallInteger)
     ano = Column(SmallInteger)
 
-    avaliacoes = relationship("Avaliacoes", back_populates="filme")
+    avaliacoes = relationship("Avaliacoes", back_populates="filme", cascade="all, delete-orphan")
 
 
 class Avaliacoes(Base):

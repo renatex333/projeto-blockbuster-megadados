@@ -9,6 +9,9 @@ class AvaliacoesBase(BaseModel):
 class AvaliacoesCreate(AvaliacoesBase):
     pass
 
+class AvaliacoesUpdate(AvaliacoesBase):
+    id_avaliacao: int
+
 
 class Avaliacoes(AvaliacoesBase):
     id_avaliacao: int
@@ -27,6 +30,9 @@ class FilmesBase(BaseModel):
 
 class FilmesCreate(FilmesBase):
     pass
+
+class FilmesUpdate(FilmesBase):
+    id_filme: int
 
 
 class Filmes(FilmesBase):

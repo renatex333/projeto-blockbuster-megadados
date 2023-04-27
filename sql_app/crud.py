@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from sqlalchemy import update
 
 from . import models, schemas
 
@@ -6,68 +7,52 @@ from . import models, schemas
 ### Funções a Implementar ###
 #############################
 
-def get_filmes(db, limit):
-    pass
+def get_filmes(db: Session):
+    return db.query(models.Filmes).all()
 
-def get_avaliacoes(db, limit):
-    pass
+def get_avaliacoes(db: Session, limit: int = 10):
+    return db.query(models.Avaliacoes).limit(limit).all()
 
-def get_filme_por_id(db, id_filme):
-    pass
+def get_filme_por_id(db: Session, id_filme: int):
+    return db.query(models.Filmes).filter(models.Filmes.id_filme == id_filme).first()
 
 def get_avaliacoes_por_filme(db, id_filme):
-    pass
+    return db.query(models.Avaliacoes).filter(models.Avaliacoes.id_filme == id_filme).all()
 
-def create_filme(db, filme):
-    pass
-
-def create_avaliacao(db, avaliacao):
-    pass
-
-def update_filme(db, id_filme, filme):
-    pass
-
-def update_avaliacao(db, id_avaliacao, avaliacao):
-    pass
-
-def delete_filme(db, id_filme):
-    pass
-
-def delete_avaliacao(db, id_avaliacao):
-    pass
-
-########################
-### Funções tutorial ###
-########################
-
-def get_user(db: Session, user_id: int):
-    return db.query(models.User).filter(models.User.id == user_id).first()
-
-
-def get_user_by_email(db: Session, email: str):
-    return db.query(models.User).filter(models.User.email == email).first()
-
-
-def get_users(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(models.User).offset(skip).limit(limit).all()
-
-
-def create_user(db: Session, user: schemas.UserCreate):
-    fake_hashed_password = user.password + "notreallyhashed"
-    db_user = models.User(email=user.email, hashed_password=fake_hashed_password)
-    db.add(db_user)
+def create_filme(db: Session, filme: schemas.FilmesCreate):
+    db_filme = models.Filmes(nome=filme.nome, categoria=filme.categoria, duracao=filme.duracao, ano=filme.ano)
+    db.add(db_filme)
     db.commit()
-    db.refresh(db_user)
-    return db_user
+    db.refresh(db_filme)
+    return db_filme
 
-
-def get_items(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(models.Item).offset(skip).limit(limit).all()
-
-
-def create_user_item(db: Session, item: schemas.ItemCreate, user_id: int):
-    db_item = models.Item(**item.dict(), owner_id=user_id)
-    db.add(db_item)
+def create_avaliacao(db: Session, avaliacao: schemas.AvaliacoesCreate):
+    db_avaliacao = models.Avaliacoes(id_filme=avaliacao.id_filme, nota=avaliacao.nota, comentario=avaliacao.comentario)
+    db.add(db_avaliacao)
     db.commit()
-    db.refresh(db_item)
-    return db_item
+    db.refresh(db_avaliacao)
+    return db_avaliacao
+
+def update_filme(db: Session, filme: schemas.FilmesUpdate):
+    db_filme = db.execute(update("Filmes").where(models.Filmes.id_filme == filme.id_filme).values(nome=filme.nome, categoria=filme.categoria, duracao=filme.duracao, ano=filme.ano))
+    db.commit()
+    db.refresh("Filmes")
+    return db_filme
+
+def update_avaliacao(db: Session, avaliacao: schemas.AvaliacoesUpdate):
+    db_avaliacao = db.execute(update("Avaliacoes").where(models.Avaliacoes.id_avaliacao == avaliacao.id_avaliacao).values(nota=avaliacao.nota, comentario=avaliacao.comentario))
+    db.commit()
+    db.refresh("Avaliacoes")
+    return db_avaliacao
+
+def delete_filme(db: Session, id_filme: int):
+    db_filme = db.delete(models.Filmes).where(models.Filmes.id_filme == id_filme)
+    db.commit()
+    db.refresh("Filmes")
+    return db_filme
+
+def delete_avaliacao(db: Session, id_avaliacao: int):
+    db_avaliacao = db.delete(models.Avaliacoes).where(models.Avaliacoes.id_avaliacao == id_avaliacao)
+    db.commit()
+    db.refresh("Avaliacoes")
+    return db_avaliacao
