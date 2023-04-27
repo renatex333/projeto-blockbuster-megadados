@@ -23,6 +23,8 @@ def create_filme(db: Session, filme: schemas.FilmesCreate):
     return db_filme
 
 def create_avaliacao(db: Session, avaliacao: schemas.AvaliacoesCreate):
+    if not db.query(models.Filmes).filter(models.Filmes.id_filme == avaliacao.id_filme).first():
+        return None
     db_avaliacao = models.Avaliacoes(id_filme=avaliacao.id_filme, nota=avaliacao.nota, comentario=avaliacao.comentario)
     db.add(db_avaliacao)
     db.commit()

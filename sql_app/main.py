@@ -49,7 +49,10 @@ def create_filme(filme: schemas.FilmesCreate, db: Session = Depends(get_db)):
 
 @app.post("/avaliacoes/", response_model=schemas.Avaliacoes)
 def create_avaliacao(avaliacao: schemas.AvaliacoesCreate, db: Session = Depends(get_db)):
-    return crud.create_avaliacao(db=db, avaliacao=avaliacao)
+    created = crud.create_avaliacao(db=db, avaliacao=avaliacao)
+    if created is None:
+        raise HTTPException(status_code=204, detail="Filme especificado não existe")
+    return created
 
 @app.put("/filmes/{id_filme}")
 def update_filme(id_filme: int, filme: schemas.FilmesUpdate, db: Session = Depends(get_db)):
