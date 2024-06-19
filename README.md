@@ -1,43 +1,40 @@
-# Blockbuster - MEGADADOS Projeto 1
+# Blockbuster Project
 
-## Desenvolvimento do projeto
+**Authors:** Renato Laffranchi Falcão (@renatex333) & Matheus Ribeiro Barros (@MineManiac)
 
-Para testar a API na máquina, rodar o seguinte comando no terminal:
+## Project Development
+
+To test the API on your machine, execute the following command in the terminal:
 
     uvicorn sql_app.main:app --reload
 
-No qual:
+Where:
 
-- `sql_app.main`: nome do arquivo `main.py` que está no subdiretório `sql_app`;
-- `app`: objeto criado dentro do arquivo `main.py` na linha `app = FastAPI()`;
-- `--reload`: faz o servidor recarregar quando há mudanças (apenas para desenvolvimento).
+- `sql_app.main`: refers to the `main.py` file located within the `sql_app` subdirectory;
+- `app`: denotes the object instantiated in the `main.py` file with the line `app = FastAPI()`;
+- `--reload`: enables the server to automatically reload upon detecting code changes (development mode only).
 
-Para acessar no WebBrowser as funcionalidades da API e realizar as requisições através de uma interface visual:
+To access the API functionalities via a web browser and perform requests through a visual interface, navigate to:
 
 - localhost:8000/docs
 
-## Protótipo inicial da API
+## Initial API Prototype
 
-[Link](https://youtu.be/x6H8JLdpoqA) para demonstração da API desenvolvida em Python com o framework FastAPI e sem integração com base de dados.
+A demonstration of the API, developed using Python and the FastAPI framework without database integration, can be viewed here: [API Prototype Demo](https://youtu.be/x6H8JLdpoqA).
 
 <img src="https://user-images.githubusercontent.com/15271557/231797556-a0293439-939a-4a3d-b3b5-3d2abbbe7420.png" width="800">
 
-## Versão completa da API
+## Complete Version of the API
 
-A API RESTFul foi projetada para se comunicar com um banco de dados em um servidor MySQL, realizando cada uma das operações CRUD e retornando ao usuário respostas coerentes com as ações realizadas. Abaixo está diagrama usado para modelar o banco de dados:
+The RESTful API has been designed to interface with a MySQL database server, supporting full CRUD operations and providing appropriate responses to user actions. Below is the database schema used for modeling:
 
 <img src="blockbuster_model.png" width="800">
 
-[Link](https://youtu.be/xASq6oCNMjE) para demonstração da API RESTFul desenvolvida em Python com o framework FastAPI e integração com base de dados MySQL.
+A demonstration of the complete RESTful API, developed using Python with FastAPI and integrated with a MySQL database, is available here: [Complete API Demo](https://youtu.be/xASq6oCNMjE).
 
-## Referências
+## References
 
-[FastAPI Docs](https://fastapi.tiangolo.com/)
-
-[Uvicorn](https://www.uvicorn.org/)
-
-[Status Code](https://www.restapitutorial.com/httpstatuscodes.html)
-
-[Notion - Bloco de Notas do Grupo](https://juniper-condor-453.notion.site/Projeto-BlockBuster-2e755cab08d94bcb8cdefe871d6d212d)
-
-[SQLAlchemy Docs](https://docs.sqlalchemy.org/en/20/orm/)
+- [FastAPI Documentation](https://fastapi.tiangolo.com/)
+- [Uvicorn Documentation](https://www.uvicorn.org/)
+- [HTTP Status Codes](https://www.restapitutorial.com/httpstatuscodes.html)
+- [SQLAlchemy Documentation](https://docs.sqlalchemy.org/en/20/orm/)
